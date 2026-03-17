@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
-    "sqlite:///./hrms.db"
+    "sqlite:///./hrms.db"  # fallback for local dev
 )
 
 # Render / Railway give postgres:// but SQLAlchemy needs postgresql://
