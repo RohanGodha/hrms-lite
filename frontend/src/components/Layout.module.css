@@ -1,0 +1,123 @@
+.root {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ── Sidebar ─────────────────────────────────────────── */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--bg-2);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 100;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 20px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.brandIcon {
+  color: var(--accent);
+}
+
+.brandName {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.brandLite {
+  color: var(--accent);
+  margin-left: 2px;
+}
+
+/* ── Nav ─────────────────────────────────────────────── */
+.nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 16px 10px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text-2);
+  transition: background 0.15s, color 0.15s;
+}
+
+.navItem:hover {
+  background: var(--bg-3);
+  color: var(--text);
+}
+
+.navItem.active {
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.navIcon {
+  flex-shrink: 0;
+}
+
+/* ── Footer ──────────────────────────────────────────── */
+.sidebarFooter {
+  padding: 16px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.adminBadge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.adminAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.adminName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.adminRole {
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+/* ── Main ────────────────────────────────────────────── */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  background: var(--bg);
+}

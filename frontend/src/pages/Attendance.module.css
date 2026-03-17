@@ -1,0 +1,191 @@
+.page {
+  padding: 36px 40px;
+  max-width: 1100px;
+  animation: fadeUp 0.3s ease both;
+}
+
+@media (max-width: 560px) {
+  .page { padding: 24px 20px; }
+}
+
+.markBtn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 18px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.15s;
+  border: none;
+}
+
+.markBtn:hover { opacity: 0.88; }
+
+/* ── Filters ──────────────────────────────────── */
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filterGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 12px;
+  height: 38px;
+}
+
+.filterIcon {
+  color: var(--text-3);
+  flex-shrink: 0;
+}
+
+.select {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  padding: 0;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.select option { background: var(--bg-3); }
+.select:focus  { outline: none; }
+
+.dateInput {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 13px;
+  font-family: var(--font-sans);
+  padding: 0;
+  width: 120px;
+}
+
+.dateInput:focus    { outline: none; }
+.dateInput::-webkit-calendar-picker-indicator { filter: invert(0.5); cursor: pointer; }
+
+.dateSep {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.clearBtn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 12px;
+  height: 38px;
+  border-radius: var(--radius);
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-3);
+  font-size: 13px;
+  transition: all 0.15s;
+}
+
+.clearBtn:hover {
+  border-color: var(--red);
+  color: var(--red);
+  background: var(--red-dim);
+}
+
+/* ── Table ────────────────────────────────────── */
+.tableWrap {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.tableHeader {
+  padding: 14px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.count {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead tr {
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  padding: 11px 16px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-3);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.table th:first-child { padding-left: 24px; }
+.table th:last-child  { padding-right: 24px; }
+
+.row {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+
+.row:last-child { border-bottom: none; }
+.row:hover { background: var(--bg-3); }
+
+.table td {
+  padding: 13px 16px;
+  font-size: 14px;
+  color: var(--text-2);
+  vertical-align: middle;
+}
+
+.table td:first-child { padding-left: 24px; }
+.table td:last-child  { padding-right: 24px; }
+
+.name {
+  color: var(--text) !important;
+  font-weight: 500;
+}
+
+.empId {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.dept {
+  font-size: 12px;
+  color: var(--text-3);
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  padding: 3px 9px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.date {
+  font-size: 13px !important;
+  white-space: nowrap;
+}
