@@ -1,2 +1,2 @@
 # hrms-lite
-Take hum assignment
+Take home assignment
