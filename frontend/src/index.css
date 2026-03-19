@@ -99,7 +99,264 @@ input, select, textarea { font-family: var(--font-body); outline: none; }
 .fade-up  { animation: fadeUp  0.4s cubic-bezier(.16,1,.3,1) both; }
 .fade-in  { animation: fadeIn  0.3s ease both; }
 
-/* ── Responsive helpers ──────────────────────────────── */
-@media (max-width:768px) {
-  :root { --sidebar-w: 0px; }
+/* ============================================================
+   GLOBAL RESPONSIVE SYSTEM
+   Breakpoints used throughout:
+     xl  : 1280px+   — wide desktop
+     lg  : 1024px    — laptop / small desktop
+     md  : 768px     — tablet portrait
+     sm  : 600px     — large phone landscape
+     xs  : 480px     — phone portrait
+     xxs : 360px     — small phone
+   ============================================================ */
+
+/* ── Base: prevent any element from overflowing its container */
+*  { box-sizing: border-box; max-width: 100%; }
+img, video, svg, canvas { height: auto; display: block; }
+
+/* ── Tables always scroll horizontally, never crush columns ── */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+/* Any table wrapper gets horizontal scroll */
+[class*="tableWrap"],
+[class*="table-wrap"] {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ── Fluid typography — scales with viewport ────────────────── */
+@media (max-width: 1024px) { html { font-size: 14.5px; } }
+@media (max-width:  768px) { html { font-size: 14px;   } }
+@media (max-width:  480px) { html { font-size: 13.5px; } }
+
+/* ============================================================
+   LARGE DESKTOP (1280px+)
+   Full sidebar, generous spacing
+   ============================================================ */
+@media (min-width: 1280px) {
+  [class*="page"] { padding: 36px 40px; }
+}
+
+/* ============================================================
+   LAPTOP (1024px – 1279px)
+   Sidebar still visible, slightly tighter spacing
+   ============================================================ */
+@media (max-width: 1279px) and (min-width: 1024px) {
+  [class*="page"] { padding: 28px 32px; }
+
+  /* Dashboard KPI: 4 → 3 columns if needed */
+  [class*="stats"] { grid-template-columns: repeat(3, 1fr) !important; }
+
+  /* Charts: side-by-side still fine */
+  [class*="charts"] { grid-template-columns: 1fr 300px !important; }
+}
+
+/* ============================================================
+   TABLET (768px – 1023px)
+   Sidebar hidden, topbar shows, content full-width
+   ============================================================ */
+@media (max-width: 1023px) and (min-width: 768px) {
+  [class*="page"] { padding: 24px 24px; }
+
+  /* KPI grid: 2 columns */
+  [class*="stats"] { grid-template-columns: repeat(2, 1fr) !important; }
+
+  /* Charts: stack vertically */
+  [class*="charts"] { grid-template-columns: 1fr !important; }
+
+  /* Profile grid: stack */
+  [class*="grid"] { grid-template-columns: 1fr !important; }
+
+  /* Header rows: allow wrap */
+  [class*="header"] { flex-wrap: wrap !important; gap: 12px !important; }
+
+  /* Table: enforce min width so columns don't collapse */
+  table { min-width: 600px; }
+
+  /* Filters: allow wrap */
+  [class*="filters"] { flex-wrap: wrap !important; }
+
+  /* Modal: wider on tablet */
+  [class*="modal"], [class*="dialog"] { max-width: 90vw !important; }
+}
+
+/* ============================================================
+   MOBILE (< 768px)
+   Full-width single column, compact everything
+   ============================================================ */
+@media (max-width: 767px) {
+  /* ── Page padding ── */
+  [class*="page"]       { padding: 20px 16px !important; }
+  [class*="content"]    { padding: 0 !important; }
+
+  /* ── Typography scale down ── */
+  [class*="title"]      { font-size: 22px !important; }
+  [class*="cardValue"]  { font-size: 26px !important; }
+  [class*="code"]       { font-size: 56px !important; }
+
+  /* ── KPI grid: 2 columns on mobile ── */
+  [class*="stats"]      { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+
+  /* ── Charts: full width, shorter height ── */
+  [class*="charts"]     { grid-template-columns: 1fr !important; gap: 14px !important; }
+  [class*="chartBox"],
+  [class*="chartBoxFull"] { padding: 16px !important; }
+
+  /* ── All grids collapse to 1 column ── */
+  [class*="grid"]       { grid-template-columns: 1fr !important; gap: 14px !important; }
+  [class*="row"]        { grid-template-columns: 1fr !important; gap: 12px !important; }
+
+  /* ── Tables: always scroll, min-width ensures columns stay ── */
+  table                 { min-width: 560px; }
+  [class*="tableWrap"]  { border-radius: 12px !important; }
+
+  /* ── Headers: stack title + action button ── */
+  [class*="header"]     { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
+  [class*="headerActions"] { width: 100% !important; justify-content: flex-start !important; flex-wrap: wrap !important; }
+
+  /* ── Buttons in headers go full width on very small ── */
+  [class*="addBtn"],
+  [class*="markBtn"],
+  [class*="exportBtn"]  { width: auto !important; }
+
+  /* ── Filters: wrap and stretch ── */
+  [class*="filters"]    { flex-wrap: wrap !important; gap: 8px !important; }
+  [class*="filterSelect"],
+  [class*="dateInput"]  { flex: 1 1 140px !important; min-width: 120px !important; }
+
+  /* ── Summary pills: wrap ── */
+  [class*="summary"]    { flex-wrap: wrap !important; gap: 8px !important; }
+
+  /* ── Cards: tighter padding ── */
+  [class*="card"]       { padding: 18px !important; }
+  [class*="cardBox"],
+  [class*="chartBox"]   { padding: 16px !important; }
+
+  /* ── Modals: full screen on mobile ── */
+  [class*="modal"],
+  [class*="dialog"]     {
+    max-width: calc(100vw - 32px) !important;
+    border-radius: 16px !important;
+    margin: 16px !important;
+  }
+
+  /* ── Sidebar: hidden on mobile (shown as drawer) ── */
+  [class*="sidebar"]:not([class*="drawer"]):not([class*="mobileSidebar"]) {
+    display: none !important;
+  }
+
+  /* ── Main content: no left margin (sidebar gone) ── */
+  [class*="main"] {
+    margin-left: 0 !important;
+    padding-top: 56px !important;
+  }
+
+  /* ── Log timeline: tighter ── */
+  [class*="logItem"]    { padding: 12px 14px !important; gap: 10px !important; }
+  [class*="logTime"]    { display: none !important; }
+
+  /* ── Users table: hide less important columns ── */
+  [class*="dateCell"]   { display: none !important; }
+
+  /* ── Pagination: center on mobile ── */
+  [class*="pagination"] {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 14px !important;
+  }
+
+  /* ── Profile avatar section: stack ── */
+  [class*="avatarSection"] { flex-direction: column !important; text-align: center !important; }
+
+  /* ── Form actions: full width buttons ── */
+  [class*="actions"] { flex-direction: column !important; }
+  [class*="cancelBtn"],
+  [class*="submitBtn"] { width: 100% !important; justify-content: center !important; }
+
+  /* ── Search bar full width ── */
+  [class*="search"]     { max-width: 100% !important; }
+  [class*="searchWrap"] { width: 100% !important; }
+}
+
+/* ============================================================
+   SMALL PHONE (< 480px)
+   Single column everything, ultra compact
+   ============================================================ */
+@media (max-width: 479px) {
+  /* ── KPI grid: 1 column ── */
+  [class*="stats"]      { grid-template-columns: 1fr !important; }
+
+  /* ── Page title smaller ── */
+  [class*="title"]      { font-size: 20px !important; }
+
+  /* ── Charts: reduce height ── */
+  [class*="recharts-responsive-container"] { height: 180px !important; }
+
+  /* ── Filters: full column ── */
+  [class*="filters"]    { flex-direction: column !important; align-items: stretch !important; }
+  [class*="filterSelect"],
+  [class*="dateInput"]  { width: 100% !important; }
+
+  /* ── Auth card: no border radius on very small ── */
+  [class*="card"]       { border-radius: 14px !important; padding: 20px 16px !important; }
+
+  /* ── Hint block in login: smaller text ── */
+  [class*="hint"]       { font-size: 11px !important; }
+
+  /* ── Buttons: full width ── */
+  [class*="addBtn"],
+  [class*="markBtn"],
+  [class*="exportBtn"]  { width: 100% !important; justify-content: center !important; }
+
+  /* ── Table: smaller font ── */
+  table td, table th    { font-size: 12px !important; padding: 10px 10px !important; }
+
+  /* ── Chips in logs: wrap and smaller ── */
+  [class*="chips"]      { gap: 6px !important; }
+  [class*="chip"]       { font-size: 11px !important; padding: 4px 10px !important; }
+}
+
+/* ============================================================
+   VERY SMALL PHONE (< 360px)
+   ============================================================ */
+@media (max-width: 359px) {
+  [class*="page"]       { padding: 14px 12px !important; }
+  [class*="card"]       { padding: 14px 12px !important; }
+  html                  { font-size: 13px; }
+  table td, table th    { font-size: 11px !important; padding: 8px 8px !important; }
+}
+
+/* ============================================================
+   TOUCH DEVICES — improve tap targets
+   ============================================================ */
+@media (hover: none) and (pointer: coarse) {
+  button, [role="button"], a, select, input[type="checkbox"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  /* Scrollbars hidden on touch — use momentum scrolling */
+  ::-webkit-scrollbar { width: 0; height: 0; }
+  [class*="tableWrap"] { scroll-snap-type: x proximity; }
+}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+  [class*="sidebar"],
+  [class*="topbar"],
+  [class*="menuBtn"],
+  [class*="addBtn"],
+  [class*="markBtn"],
+  [class*="exportBtn"],
+  [class*="filters"],
+  [class*="pagination"] { display: none !important; }
+  [class*="main"]        { margin: 0 !important; padding: 0 !important; }
+  [class*="page"]        { padding: 0 !important; }
+  body                   { background: white !important; color: black !important; }
+  table                  { border: 1px solid #ccc; }
+  table th, table td     { border: 1px solid #ddd; padding: 6px 10px !important; color: black !important; }
 }
