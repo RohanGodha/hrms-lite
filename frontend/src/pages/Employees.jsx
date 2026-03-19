@@ -16,7 +16,6 @@ const COLORS = ['#3b82f6','#10b981','#8b5cf6','#f59e0b','#ef4444','#06b6d4','#ec
 const EMPTY  = { employee_id:'', full_name:'', email:'', department:'', position:'', phone:'', avatar_color: COLORS[0] }
 const PAGE_SIZE = 10
 
-// ── Point 5: CSV export helper ──────────────────────────────────────────────
 function exportCSV(employees) {
   const headers = ['Employee ID','Full Name','Email','Department','Position','Phone','Joined']
   const rows = employees.map(e => [
@@ -32,117 +31,9 @@ function exportCSV(employees) {
   a.click(); URL.revokeObjectURL(url)
 }
 
-export default function Employees() {
-  const { isAdmin } = useAuth()
-  const [employees, setEmployees] = useState([])
-  const [filtered,  setFiltered]  = useState([])
-  const [search,    setSearch]    = useState('')
-  const [loading,   setLoading]   = useState(true)
-  const [error,     setError]     = useState(null)
-  const [page,      setPage]      = useState(1)
-
-  // Modals
-  const [showAdd,   setShowAdd]   = useState(false)
-  const [editTarget,setEditTarget]= useState(null)
-  const [delTarget, setDelTarget] = useState(null)
-  const [deleting,  setDeleting]  = useState(false)
-
-  // Forms
-  const [form,   setForm]   = useState(EMPTY)
-  const [errs,   setErrs]   = useState({})
-  const [saving, setSaving] = useState(false)
-
-  const load = useCallback(async () => {
-    setLoading(true); setError(null)
-    try { const d = await getEmployees(); setEmployees(d); setFiltered(d) }
-    catch(e) { setError(e.message) }
-    finally { setLoading(false) }
-  }, [])
-
-  useEffect(() => { load() }, [load])
-
-  useEffect(() => {
-    const q = search.toLowerCase()
-    setFiltered(employees.filter(e =>
-      e.full_name.toLowerCase().includes(q) ||
-      e.employee_id.toLowerCase().includes(q) ||
-      e.email.toLowerCase().includes(q) ||
-      e.department.toLowerCase().includes(q)
-    ))
-    setPage(1)
-  }, [search, employees])
-
-  // ── Point 2: Pagination ──────────────────────────────────────────────────
-  const totalPages  = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const paginated   = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-
-  const set = k => e => setForm(p => ({ ...p, [k]: e.target.value }))
-
-  const validate = () => {
-    const e = {}
-    if (!form.employee_id.trim()) e.employee_id = 'Required'
-    if (!form.full_name.trim())   e.full_name   = 'Required'
-    if (!form.email.trim())       e.email       = 'Required'
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email'
-    if (!form.department)         e.department  = 'Required'
-    return e
-  }
-
-  // ── Add Employee ─────────────────────────────────────────────────────────
-  const handleAdd = async ev => {
-    ev.preventDefault()
-    const e = validate(); if (Object.keys(e).length) { setErrs(e); return }
-    setSaving(true)
-    try {
-      const emp = await createEmployee(form)
-      setEmployees(p => [emp, ...p])
-      toast.success(`${emp.full_name} added!`)
-      setShowAdd(false); setForm(EMPTY); setErrs({})
-    } catch(err) {
-      // ── Point 3: Field-level errors ────────────────────────────────────
-      if (err?.fieldError) setErrs({ [err.field]: err.message })
-      else toast.error(err.message)
-    } finally { setSaving(false) }
-  }
-
-  // ── Point 1: Edit Employee ────────────────────────────────────────────────
-  const openEdit = emp => {
-    setForm({ employee_id: emp.employee_id, full_name: emp.full_name, email: emp.email,
-              department: emp.department, position: emp.position || '', phone: emp.phone || '',
-              avatar_color: emp.avatar_color || COLORS[0] })
-    setErrs({})
-    setEditTarget(emp)
-  }
-
-  const handleEdit = async ev => {
-    ev.preventDefault()
-    const e = validate(); if (Object.keys(e).length) { setErrs(e); return }
-    setSaving(true)
-    try {
-      const updated = await editEmployee(editTarget.id, form)
-      setEmployees(p => p.map(e => e.id === updated.id ? updated : e))
-      toast.success(`${updated.full_name} updated!`)
-      setEditTarget(null); setForm(EMPTY); setErrs({})
-    } catch(err) {
-      if (err?.fieldError) setErrs({ [err.field]: err.message })
-      else toast.error(err.message)
-    } finally { setSaving(false) }
-  }
-
-  // ── Delete ────────────────────────────────────────────────────────────────
-  const handleDelete = async () => {
-    if (!delTarget) return
-    setDeleting(true)
-    try {
-      await deleteEmployee(delTarget.id)
-      setEmployees(p => p.filter(e => e.id !== delTarget.id))
-      toast.success(`${delTarget.full_name} removed`)
-      setDelTarget(null)
-    } catch(err) { toast.error(err.message) }
-    finally { setDeleting(false) }
-  }
-
-  const EmployeeForm = ({ onSubmit, submitLabel }) => (
+// ── Extracted OUTSIDE parent component — fixes focus-loss bug ────────────────
+function EmployeeForm({ form, errs, saving, set, onSubmit, onCancel, submitLabel }) {
+  return (
     <form className={f.form} onSubmit={onSubmit} noValidate>
       <div className={f.row}>
         <div className={f.field}>
@@ -190,7 +81,7 @@ export default function Employees() {
         <label className={f.label}>Avatar Color</label>
         <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginTop:2 }}>
           {COLORS.map(c => (
-            <button key={c} type="button" onClick={() => setForm(p => ({ ...p, avatar_color: c }))}
+            <button key={c} type="button" onClick={() => set('avatar_color')({ target: { value: c } })}
               style={{ width:26, height:26, borderRadius:'50%', background:c, cursor:'pointer',
                 border: form.avatar_color === c ? '3px solid var(--text)' : '2px solid transparent',
                 transform: form.avatar_color === c ? 'scale(1.2)' : 'scale(1)',
@@ -199,16 +90,120 @@ export default function Employees() {
         </div>
       </div>
       <div className={f.actions}>
-        <button type="button" className={f.cancelBtn}
-          onClick={() => { setShowAdd(false); setEditTarget(null); setForm(EMPTY); setErrs({}) }}>
-          Cancel
-        </button>
+        <button type="button" className={f.cancelBtn} onClick={onCancel}>Cancel</button>
         <button type="submit" className={f.submitBtn} disabled={saving}>
           {saving ? <span className={f.spin} /> : submitLabel}
         </button>
       </div>
     </form>
   )
+}
+
+export default function Employees() {
+  const { isAdmin } = useAuth()
+  const [employees, setEmployees] = useState([])
+  const [filtered,  setFiltered]  = useState([])
+  const [search,    setSearch]    = useState('')
+  const [loading,   setLoading]   = useState(true)
+  const [error,     setError]     = useState(null)
+  const [page,      setPage]      = useState(1)
+
+  const [showAdd,    setShowAdd]    = useState(false)
+  const [editTarget, setEditTarget] = useState(null)
+  const [delTarget,  setDelTarget]  = useState(null)
+  const [deleting,   setDeleting]   = useState(false)
+
+  const [form,   setForm]   = useState(EMPTY)
+  const [errs,   setErrs]   = useState({})
+  const [saving, setSaving] = useState(false)
+
+  const load = useCallback(async () => {
+    setLoading(true); setError(null)
+    try { const d = await getEmployees(); setEmployees(d); setFiltered(d) }
+    catch(e) { setError(e.message) }
+    finally { setLoading(false) }
+  }, [])
+
+  useEffect(() => { load() }, [load])
+
+  useEffect(() => {
+    const q = search.toLowerCase()
+    setFiltered(employees.filter(e =>
+      e.full_name.toLowerCase().includes(q) ||
+      e.employee_id.toLowerCase().includes(q) ||
+      e.email.toLowerCase().includes(q) ||
+      e.department.toLowerCase().includes(q)
+    ))
+    setPage(1)
+  }, [search, employees])
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+  const paginated  = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+
+  const set = k => e => setForm(p => ({ ...p, [k]: e.target.value }))
+
+  const validate = () => {
+    const e = {}
+    if (!form.employee_id.trim()) e.employee_id = 'Required'
+    if (!form.full_name.trim())   e.full_name   = 'Required'
+    if (!form.email.trim())       e.email       = 'Required'
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Invalid email'
+    if (!form.department)         e.department  = 'Required'
+    return e
+  }
+
+  const handleAdd = async ev => {
+    ev.preventDefault()
+    const e = validate(); if (Object.keys(e).length) { setErrs(e); return }
+    setSaving(true)
+    try {
+      const emp = await createEmployee(form)
+      setEmployees(p => [emp, ...p])
+      toast.success(`${emp.full_name} added!`)
+      setShowAdd(false); setForm(EMPTY); setErrs({})
+    } catch(err) {
+      if (err?.fieldError) setErrs({ [err.field]: err.message })
+      else toast.error(err.message)
+    } finally { setSaving(false) }
+  }
+
+  const openEdit = emp => {
+    setForm({ employee_id: emp.employee_id, full_name: emp.full_name, email: emp.email,
+              department: emp.department, position: emp.position || '', phone: emp.phone || '',
+              avatar_color: emp.avatar_color || COLORS[0] })
+    setErrs({})
+    setEditTarget(emp)
+  }
+
+  const handleEdit = async ev => {
+    ev.preventDefault()
+    const e = validate(); if (Object.keys(e).length) { setErrs(e); return }
+    setSaving(true)
+    try {
+      const updated = await editEmployee(editTarget.id, form)
+      setEmployees(p => p.map(e => e.id === updated.id ? updated : e))
+      toast.success(`${updated.full_name} updated!`)
+      setEditTarget(null); setForm(EMPTY); setErrs({})
+    } catch(err) {
+      if (err?.fieldError) setErrs({ [err.field]: err.message })
+      else toast.error(err.message)
+    } finally { setSaving(false) }
+  }
+
+  const handleDelete = async () => {
+    if (!delTarget) return
+    setDeleting(true)
+    try {
+      await deleteEmployee(delTarget.id)
+      setEmployees(p => p.filter(e => e.id !== delTarget.id))
+      toast.success(`${delTarget.full_name} removed`)
+      setDelTarget(null)
+    } catch(err) { toast.error(err.message) }
+    finally { setDeleting(false) }
+  }
+
+  const closeAdd  = () => { setShowAdd(false);    setForm(EMPTY); setErrs({}) }
+  const closeEdit = () => { setEditTarget(null);  setForm(EMPTY); setErrs({}) }
 
   return (
     <div className={s.page}>
@@ -218,9 +213,8 @@ export default function Employees() {
           <p className={s.sub}>{employees.length} total employee{employees.length !== 1 ? 's' : ''}</p>
         </div>
         <div className={s.headerActions}>
-          {/* Point 5: CSV Export */}
           {employees.length > 0 && (
-            <button className={s.exportBtn} onClick={() => exportCSV(filtered.length ? filtered : employees)} title="Export to CSV">
+            <button className={s.exportBtn} onClick={() => exportCSV(filtered.length ? filtered : employees)}>
               <Download size={15} /> Export CSV
             </button>
           )}
@@ -230,20 +224,16 @@ export default function Employees() {
         </div>
       </motion.div>
 
-      {/* Search */}
       {!loading && !error && employees.length > 0 && (
         <div className={s.searchWrap}>
           <Search size={14} className={s.searchIcon} />
           <input className={s.search}
             placeholder="Search by name, ID, email, department…"
             value={search} onChange={e => setSearch(e.target.value)} />
-          {search && (
-            <span className={s.searchCount}>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>
-          )}
+          {search && <span className={s.searchCount}>{filtered.length} result{filtered.length !== 1 ? 's' : ''}</span>}
         </div>
       )}
 
-      {/* Point 8: Skeleton instead of spinner */}
       {loading && <SkeletonTable rows={8} cols={7} />}
       {error && !loading && <ErrorState message={error} onRetry={load} />}
 
@@ -259,8 +249,7 @@ export default function Employees() {
                     <thead>
                       <tr>
                         <th>Employee</th><th>ID</th><th>Department</th>
-                        <th>Position</th><th>Email</th><th>Joined</th>
-                        <th></th>
+                        <th>Position</th><th>Email</th><th>Joined</th><th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -280,17 +269,11 @@ export default function Employees() {
                           <td><span className={s.tag}>{emp.department}</span></td>
                           <td className={s.pos}>{emp.position || '—'}</td>
                           <td className={s.email}>{emp.email}</td>
-                          <td className={s.date}>
-                            {emp.created_at ? format(new Date(emp.created_at), 'dd MMM yyyy') : '—'}
-                          </td>
+                          <td className={s.date}>{emp.created_at ? format(new Date(emp.created_at), 'dd MMM yyyy') : '—'}</td>
                           <td className={s.actionCol}>
-                            <button className={s.editBtn} onClick={() => openEdit(emp)} title="Edit">
-                              <Pencil size={13} />
-                            </button>
+                            <button className={s.editBtn} onClick={() => openEdit(emp)} title="Edit"><Pencil size={13} /></button>
                             {isAdmin && (
-                              <button className={s.delBtn} onClick={() => setDelTarget(emp)} title="Delete">
-                                <Trash2 size={13} />
-                              </button>
+                              <button className={s.delBtn} onClick={() => setDelTarget(emp)} title="Delete"><Trash2 size={13} /></button>
                             )}
                           </td>
                         </motion.tr>
@@ -299,7 +282,6 @@ export default function Employees() {
                   </table>
                 </div>
 
-                {/* Point 2: Pagination */}
                 {totalPages > 1 && (
                   <div className={s.pagination}>
                     <span className={s.pageInfo}>
@@ -332,17 +314,16 @@ export default function Employees() {
             )
       )}
 
-      {/* Add Modal */}
-      <Modal isOpen={showAdd} onClose={() => { setShowAdd(false); setForm(EMPTY); setErrs({}) }} title="Add New Employee">
-        <EmployeeForm onSubmit={handleAdd} submitLabel="Add Employee" />
+      <Modal isOpen={showAdd} onClose={closeAdd} title="Add New Employee">
+        <EmployeeForm form={form} errs={errs} saving={saving} set={set}
+          onSubmit={handleAdd} onCancel={closeAdd} submitLabel="Add Employee" />
       </Modal>
 
-      {/* Edit Modal */}
-      <Modal isOpen={!!editTarget} onClose={() => { setEditTarget(null); setForm(EMPTY); setErrs({}) }} title="Edit Employee">
-        <EmployeeForm onSubmit={handleEdit} submitLabel="Save Changes" />
+      <Modal isOpen={!!editTarget} onClose={closeEdit} title="Edit Employee">
+        <EmployeeForm form={form} errs={errs} saving={saving} set={set}
+          onSubmit={handleEdit} onCancel={closeEdit} submitLabel="Save Changes" />
       </Modal>
 
-      {/* Delete confirm */}
       <Modal isOpen={!!delTarget} onClose={() => setDelTarget(null)} title="Delete Employee" width={420}>
         <div style={{ textAlign:'center', display:'flex', flexDirection:'column', alignItems:'center', gap:14 }}>
           <div style={{ width:52,height:52,borderRadius:14,background:'var(--red-dim)',border:'1px solid rgba(239,68,68,.2)',display:'flex',alignItems:'center',justifyContent:'center',color:'var(--red)' }}>
@@ -355,7 +336,7 @@ export default function Employees() {
           <div style={{ display:'flex', gap:10, width:'100%' }}>
             <button style={{ flex:1,padding:'9px',borderRadius:'var(--radius)',background:'transparent',border:'1px solid var(--border)',color:'var(--text-2)',cursor:'pointer' }}
               onClick={() => setDelTarget(null)} disabled={deleting}>Cancel</button>
-            <button style={{ flex:1,padding:'9px',borderRadius:'var(--radius)',background:'var(--red)',color:'#fff',fontWeight:600,cursor:'pointer',opacity:deleting?.5:1,border:'none' }}
+            <button style={{ flex:1,padding:'9px',borderRadius:'var(--radius)',background:'var(--red)',color:'#fff',fontWeight:600,cursor:'pointer',border:'none',opacity:deleting?0.5:1 }}
               onClick={handleDelete} disabled={deleting}>{deleting ? 'Deleting…' : 'Delete'}</button>
           </div>
         </div>
