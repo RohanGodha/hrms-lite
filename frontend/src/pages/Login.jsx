@@ -53,6 +53,7 @@ export default function Login() {
           <div className={s.field}>
             <Lock size={15} className={s.fieldIcon} />
             <input className={s.input} type={show?'text':'password'} placeholder="Password"
+              style={{ paddingRight: 40 }}
               value={form.password} onChange={e=>setForm(p=>({...p,password:e.target.value}))} required />
             <button type="button" className={s.eyeBtn} onClick={()=>setShow(v=>!v)}>
               {show ? <EyeOff size={14}/> : <Eye size={14}/>}
@@ -76,3 +77,4 @@ export default function Login() {
     </div>
   )
 }
+z
