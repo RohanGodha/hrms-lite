@@ -37,8 +37,15 @@
 .input { width: 100%; background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 14px; padding: 11px 12px 11px 38px; transition: border-color .2s, box-shadow .2s; }
 .input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
 .input::placeholder { color: var(--text-3); }
-.eyeBtn { position: absolute; right: 12px; background: transparent; color: var(--text-3); display: flex; align-items: center; transition: color .15s; }
+.eyeBtn { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: transparent; color: var(--text-3); display: flex; align-items: center; transition: color .15s; cursor: pointer; }
 .eyeBtn:hover { color: var(--text); }
+/* Kill browser's native password reveal icon */
+.input::-ms-reveal,
+.input::-ms-clear,
+.input::-webkit-contacts-auto-fill-button,
+.input::-webkit-credentials-auto-fill-button { display: none; }
+/* Add right padding on password inputs so text doesn't run under the eye button */
+.input[type="password"], .input[data-has-eye="true"] { padding-right: 40px; }
 .roleRow { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .roleBtn { padding: 10px; border-radius: var(--radius); background: var(--bg-3); border: 1px solid var(--border); color: var(--text-2); font-size: 13px; transition: all .15s; }
 .roleBtn:hover { border-color: var(--border-2); color: var(--text); }
