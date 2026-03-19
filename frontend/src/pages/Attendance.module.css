@@ -62,3 +62,32 @@
 .submitBtn:disabled { opacity: .5; cursor: not-allowed; }
 .spin { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; display: inline-block; }
 @media (max-width:600px) { .page{padding:20px 16px;} .row{grid-template-columns:1fr;} }
+
+/* ── Fix 2: Attendance table column layout ── */
+.tableWrap { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table { width: 100%; border-collapse: collapse; min-width: 700px; }
+.table th:first-child,
+.table td:first-child { padding-left: 20px; }
+.table th:last-child,
+.table td:last-child  { padding-right: 20px; }
+/* Prevent any cell from wrapping and breaking column alignment */
+.table th, .table td { white-space: nowrap; }
+.empName { white-space: nowrap; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
+
+/* ── Fix 3: Attendance page full responsiveness ── */
+@media (max-width: 768px) {
+  .page { padding: 20px 16px; }
+  .header { gap: 10px; }
+  .title { font-size: 22px; }
+  .filters { gap: 8px; }
+  .filterSelect { min-width: 130px; font-size: 12px; }
+  .dateInput { font-size: 12px; padding: 6px 8px; }
+  .summary { gap: 8px; }
+  .pill { font-size: 12px; padding: 5px 10px; }
+}
+
+@media (max-width: 480px) {
+  .markBtn { padding: 8px 12px; font-size: 13px; }
+  .filters { flex-direction: column; align-items: flex-start; }
+  .filterSelect, .dateInput { width: 100%; }
+}
