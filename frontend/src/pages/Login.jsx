@@ -42,7 +42,7 @@ export default function Login() {
           <Building2 size={24} />
         </div>
         <h1 className={s.title}>Welcome back</h1>
-        <p className={s.sub}>Sign in to your HRMS Pro account</p>
+        <p className={s.sub}>Sign in to your HRMS Lite account</p>
 
         <form className={s.form} onSubmit={submit}>
           <div className={s.field}>

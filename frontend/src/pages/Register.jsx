@@ -41,7 +41,7 @@ export default function Register() {
 
         <div className={s.logo}><Building2 size={24}/></div>
         <h1 className={s.title}>Create account</h1>
-        <p className={s.sub}>Join HRMS Pro — your team HR platform</p>
+        <p className={s.sub}>Join HRMS Lite — your team HR platform</p>
 
         <form className={s.form} onSubmit={submit}>
           <div className={s.field}>

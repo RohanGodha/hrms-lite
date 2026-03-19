@@ -18,7 +18,7 @@ models.Base.metadata.create_all(bind=engine)
 # ── Point 11: Rate limiter ────────────────────────────────────────────────────
 limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
 
-app = FastAPI(title="HRMS Pro API", version="2.1.0")
+app = FastAPI(title="HRMS Lite API", version="2.1.0")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
