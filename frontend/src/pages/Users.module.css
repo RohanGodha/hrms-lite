@@ -1,0 +1,32 @@
+.page { padding: 32px 36px; max-width: 1100px; animation: fadeUp .4s ease both; }
+.header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 28px; flex-wrap: wrap; }
+.title { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+.sub { font-size: 13px; color: var(--text-3); margin-top: 3px; }
+.adminBadge { display: flex; align-items: center; gap: 7px; padding: 7px 14px; background: var(--purple-dim); border: 1px solid rgba(139,92,246,.2); border-radius: 99px; color: var(--purple); font-size: 13px; font-weight: 500; }
+.spinWrap { display: flex; justify-content: center; padding: 60px; }
+.spinner { width: 36px; height: 36px; border: 2px solid var(--border-2); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
+.tableWrap { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; }
+.table thead tr { border-bottom: 1px solid var(--border); }
+.table th { padding: 11px 16px; font-size: 11px; font-weight: 600; color: var(--text-3); text-align: left; text-transform: uppercase; letter-spacing: .07em; }
+.row { border-bottom: 1px solid var(--border); transition: background .1s; }
+.row:last-child { border-bottom: none; }
+.row:hover { background: var(--bg-3); }
+.table td { padding: 13px 16px; font-size: 14px; color: var(--text-2); vertical-align: middle; }
+.userCell { display: flex; align-items: center; gap: 10px; }
+.avatar { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.userName { font-weight: 500; color: var(--text); display: flex; align-items: center; gap: 7px; }
+.youTag { font-size: 11px; padding: 1px 7px; background: var(--accent-dim); color: var(--accent); border-radius: 99px; font-weight: 500; }
+.emailCell { font-size: 13px !important; color: var(--text-3) !important; }
+.roleSelect { background: var(--bg-3); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; padding: 5px 10px; cursor: pointer; transition: border-color .15s; font-family: var(--font-body); }
+.roleSelect:focus { outline: none; }
+.adminSelect { color: var(--purple); border-color: rgba(139,92,246,.3); background: var(--purple-dim); }
+.userSelect { color: var(--text-2); }
+.roleSelect:disabled { opacity: .5; cursor: not-allowed; }
+.statusBadge { padding: 3px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; }
+.active   { background: var(--green-dim); color: var(--green); border: 1px solid rgba(16,185,129,.2); }
+.inactive { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(239,68,68,.2); }
+.dateCell { font-size: 12px !important; color: var(--text-3) !important; white-space: nowrap; }
+.delBtn { width: 30px; height: 30px; border-radius: 8px; background: transparent; border: 1px solid transparent; color: var(--text-3); display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.delBtn:hover { background: var(--red-dim); border-color: rgba(239,68,68,.2); color: var(--red); }
+@media (max-width:600px) { .page { padding: 20px 16px; } }

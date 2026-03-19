@@ -1,16 +1,18 @@
 services:
   - type: web
-    name: hrms-lite-api
+    name: hrms-pro-api
     runtime: python
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --workers 1
     envVars:
       - key: DATABASE_URL
         fromDatabase:
-          name: hrms-db
+          name: hrms-pro-db
           property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
 
 databases:
-  - name: hrms-db
+  - name: hrms-pro-db
     databaseName: hrms
     user: hrms_user

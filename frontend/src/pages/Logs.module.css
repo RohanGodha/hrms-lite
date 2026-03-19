@@ -1,0 +1,23 @@
+.page { padding: 32px 36px; max-width: 900px; animation: fadeUp .4s ease both; }
+.header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 28px; }
+.title { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
+.sub { font-size: 13px; color: var(--text-3); margin-top: 3px; }
+.refreshBtn { display: flex; align-items: center; gap: 7px; padding: 8px 16px; border-radius: var(--radius); background: var(--bg-2); border: 1px solid var(--border); color: var(--text-2); font-size: 13px; transition: all .15s; }
+.refreshBtn:hover { border-color: var(--border-2); color: var(--text); }
+.spinning { animation: spin .8s linear infinite; }
+.spinWrap { display: flex; justify-content: center; padding: 60px; }
+.spinner { width: 36px; height: 36px; border: 2px solid var(--border-2); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
+.empty { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 60px; color: var(--text-3); font-size: 14px; }
+.timeline { display: flex; flex-direction: column; gap: 0; background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.logItem { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; border-bottom: 1px solid var(--border); transition: background .1s; }
+.logItem:last-child { border-bottom: none; }
+.logItem:hover { background: var(--bg-3); }
+.logDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.logContent { flex: 1; min-width: 0; }
+.logTop { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.logAction { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.logResource { font-size: 11px; background: var(--bg-3); border: 1px solid var(--border); padding: 1px 7px; border-radius: 6px; color: var(--text-3); font-family: var(--font-mono); }
+.logTime { font-size: 11px; color: var(--text-3); margin-left: auto; white-space: nowrap; }
+.logDetail { font-size: 13px; color: var(--text-2); margin-top: 4px; }
+.logUser { font-size: 11px; color: var(--text-3); margin-top: 3px; }
+@media (max-width:600px) { .page { padding: 20px 16px; } }

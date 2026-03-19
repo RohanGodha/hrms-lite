@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /dashboard
+Disallow: /employees
+Disallow: /attendance
+Disallow: /users
+Disallow: /logs
+Disallow: /profile
+Allow: /login
+Allow: /register

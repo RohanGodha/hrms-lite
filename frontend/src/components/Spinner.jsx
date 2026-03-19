@@ -1,9 +1,7 @@
-import styles from './Spinner.module.css'
-
-export default function Spinner({ size = 32, label = 'Loading…' }) {
+export default function Spinner({ size = 36 }) {
   return (
-    <div className={styles.wrap} role="status" aria-label={label}>
-      <div className={styles.ring} style={{ width: size, height: size }} />
+    <div style={{ display:'flex', justifyContent:'center', alignItems:'center', padding:'56px 0' }}>
+      <div style={{ width:size, height:size, border:'2px solid var(--border-2)', borderTopColor:'var(--accent)', borderRadius:'50%', animation:'spin 0.7s linear infinite' }} />
     </div>
   )
 }

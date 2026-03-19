@@ -1,123 +1,54 @@
-.root {
-  display: flex;
-  min-height: 100vh;
-}
+.root { display: flex; min-height: 100vh; }
 
-/* ── Sidebar ─────────────────────────────────────────── */
+/* ── Sidebar ─────────────────────────────── */
 .sidebar {
   width: var(--sidebar-w);
   background: var(--bg-2);
   border-right: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  z-index: 100;
+  position: fixed; top: 0; left: 0; height: 100vh;
+  z-index: 100; display: flex; flex-direction: column;
+  transition: background .3s;
 }
+.sidebarInner { display: flex; flex-direction: column; height: 100%; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 24px 20px 20px; border-bottom: 1px solid var(--border); }
+.brandIcon { width: 36px; height: 36px; border-radius: 10px; background: var(--accent-dim); border: 1px solid var(--border-2); display: flex; align-items: center; justify-content: center; color: var(--accent); }
+.brandName { font-family: var(--font-display); font-size: 18px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+.brandPro { color: var(--accent); margin-left: 1px; }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 24px 20px 20px;
-  border-bottom: 1px solid var(--border);
-}
+.nav { flex: 1; display: flex; flex-direction: column; gap: 3px; padding: 14px 10px; overflow-y: auto; }
+.navItem { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: var(--radius); font-size: 14px; color: var(--text-2); transition: all .15s; position: relative; }
+.navItem:hover { background: var(--bg-3); color: var(--text); }
+.navItem.active { background: var(--accent-dim); color: var(--accent); font-weight: 500; }
+.navIcon { flex-shrink: 0; }
+.navArrow { margin-left: auto; opacity: 0; transition: opacity .15s; }
+.navItem.active .navArrow, .navItem:hover .navArrow { opacity: 1; }
 
-.brandIcon {
-  color: var(--accent);
-}
+.sidebarBottom { padding: 14px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 10px; }
+.userCard { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius); }
+.avatar { width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.userName { font-size: 13px; font-weight: 500; color: var(--text); }
+.userRole { font-size: 11px; color: var(--text-3); margin-top: 1px; }
+.actions { display: flex; gap: 8px; }
+.actionBtn { flex: 1; padding: 8px; border-radius: var(--radius); background: var(--bg-3); border: 1px solid var(--border); color: var(--text-2); display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.actionBtn:hover { background: var(--bg-4); color: var(--text); border-color: var(--border-2); }
 
-.brandName {
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--text);
-}
+/* ── Topbar (mobile) ─────────────────────── */
+.topbar { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 56px; background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 0 16px; align-items: center; justify-content: space-between; }
+.topbarBrand { font-family: var(--font-display); font-size: 16px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 7px; }
+.topbarRight { display: flex; align-items: center; gap: 8px; }
+.menuBtn, .iconBtn { width: 36px; height: 36px; border-radius: 10px; background: var(--bg-3); border: 1px solid var(--border); color: var(--text-2); display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.menuBtn:hover, .iconBtn:hover { color: var(--text); }
 
-.brandLite {
-  color: var(--accent);
-  margin-left: 2px;
-}
+/* ── Mobile Drawer ───────────────────────── */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 290; backdrop-filter: blur(4px); }
+.drawer { position: fixed; top: 0; left: 0; width: 260px; height: 100vh; background: var(--bg-2); border-right: 1px solid var(--border); z-index: 300; overflow: hidden; }
+.closeBtn { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; border-radius: 8px; background: var(--bg-3); border: 1px solid var(--border); color: var(--text-2); display: flex; align-items: center; justify-content: center; z-index: 1; }
 
-/* ── Nav ─────────────────────────────────────────────── */
-.nav {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 16px 10px;
-}
+/* ── Main ────────────────────────────────── */
+.main { margin-left: var(--sidebar-w); flex: 1; min-height: 100vh; background: var(--bg); transition: background .3s; }
 
-.navItem {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: var(--radius);
-  font-size: 14px;
-  font-weight: 400;
-  color: var(--text-2);
-  transition: background 0.15s, color 0.15s;
-}
-
-.navItem:hover {
-  background: var(--bg-3);
-  color: var(--text);
-}
-
-.navItem.active {
-  background: var(--accent-dim);
-  color: var(--accent);
-  font-weight: 500;
-}
-
-.navIcon {
-  flex-shrink: 0;
-}
-
-/* ── Footer ──────────────────────────────────────────── */
-.sidebarFooter {
-  padding: 16px 14px;
-  border-top: 1px solid var(--border);
-}
-
-.adminBadge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.adminAvatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: var(--accent-dim);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  font-weight: 600;
-  flex-shrink: 0;
-}
-
-.adminName {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text);
-}
-
-.adminRole {
-  font-size: 11px;
-  color: var(--text-3);
-}
-
-/* ── Main ────────────────────────────────────────────── */
-.main {
-  margin-left: var(--sidebar-w);
-  flex: 1;
-  min-height: 100vh;
-  background: var(--bg);
+@media (max-width: 768px) {
+  .sidebar { display: none; }
+  .topbar { display: flex; }
+  .main { margin-left: 0; padding-top: 56px; }
 }
