@@ -13,7 +13,7 @@ function SidebarContent({ nav, user, collapsed, setCollapsed, doLogout }) {
       {/* Brand */}
       <div className={s.brand}>
         <div className={s.brandIcon}><Building2 size={18} /></div>
-        {!collapsed && <span className={s.brandName}>HRMS<span className={s.brandPro}>Pro</span></span>}
+        {!collapsed && <span className={s.brandName}>HRMS<span className={s.brandPro}>Lite</span></span>}
         <button className={s.collapseBtn} onClick={() => setCollapsed(v => !v)} title={collapsed ? 'Expand' : 'Collapse'}>
           <ChevronRight size={14} style={{ transform: collapsed ? 'rotate(0deg)' : 'rotate(180deg)', transition: 'transform 0.25s' }} />
         </button>
@@ -116,7 +116,7 @@ export default function Layout() {
           </button>
           <div className={s.topbarBrand}>
             <Building2 size={17} style={{ color:'var(--accent)' }} />
-            HRMS<span className={s.topbarBrandPro}>Pro</span>
+            HRMS<span className={s.topbarBrandPro}>Lite</span>
           </div>
           <div className={s.topbarRight}>
             <ThemeToggle />
