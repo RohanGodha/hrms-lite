@@ -49,7 +49,7 @@ function MarkModal({ open, onClose, onSubmit, employees }) {
             </select>
             {errors.employee_id && <span>{errors.employee_id}</span>}
           </div>
-          <div className={s.row}>
+          <div className={s.formRow}>
             <div className={s.field}><label>Date *</label><input type="date" value={form.date} max={today} onChange={set('date')}/></div>
             <div className={s.field}>
               <label>Status *</label>
@@ -64,7 +64,7 @@ function MarkModal({ open, onClose, onSubmit, employees }) {
               </div>
             </div>
           </div>
-          <div className={s.row}>
+          <div className={s.formRow}>
             <div className={s.field}><label>Check-in</label><input type="time" value={form.check_in} onChange={set('check_in')}/></div>
             <div className={s.field}><label>Check-out</label><input type="time" value={form.check_out} onChange={set('check_out')}/></div>
           </div>
@@ -165,7 +165,7 @@ export default function Attendance() {
               {records.map((rec,i)=>{
                 const emp = empMap[rec.employee_id]
                 return (
-                  <motion.tr key={rec.id} className={s.row}
+                  <motion.tr key={rec.id} className={s.tableRow}
                     initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} transition={{delay:i*0.025}}>
                     <td>
                       <div className={s.empCell}>
