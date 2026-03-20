@@ -2,11 +2,15 @@
 .header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
 .title { font-family: var(--font-display); font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -.03em; }
 .sub { font-size: 13px; color: var(--text-3); margin-top: 3px; }
-.markBtn { display: flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius); background: var(--accent); color: #fff; font-size: 14px; font-weight: 500; transition: opacity .15s,transform .15s; }
+.markBtn { display: flex; align-items: center; gap: 7px; padding: 9px 18px; border-radius: var(--radius); background: var(--accent); color: #fff; font-size: 14px; font-weight: 500; transition: opacity .15s, transform .15s; }
 .markBtn:hover { opacity: .88; transform: translateY(-1px); }
+
+/* Summary pills */
 .summary { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
 .pill { display: flex; align-items: center; gap: 7px; padding: 6px 14px; background: var(--bg-2); border: 1px solid var(--border); border-radius: 99px; font-size: 13px; color: var(--text-2); }
 .pillDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* Filters */
 .filters { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
 .filterSelect { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 13px; padding: 7px 10px; min-width: 160px; }
 .filterSelect:focus { outline: none; border-color: var(--accent); }
@@ -15,37 +19,91 @@
 .dateInput::-webkit-calendar-picker-indicator { filter: invert(.5); cursor: pointer; }
 .clearBtn { display: flex; align-items: center; gap: 5px; padding: 7px 12px; border-radius: var(--radius); background: transparent; border: 1px solid var(--border); color: var(--text-3); font-size: 13px; transition: all .15s; }
 .clearBtn:hover { border-color: var(--red); color: var(--red); background: var(--red-dim); }
+
+/* Loading / empty */
 .spinWrap { display: flex; justify-content: center; padding: 60px; }
 .spinner { width: 36px; height: 36px; border: 2px solid var(--border-2); border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; }
 .empty { display: flex; flex-direction: column; align-items: center; padding: 64px 20px; color: var(--text-3); font-size: 14px; }
-.tableWrap { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; overflow-x: auto; }
-.table { width: 100%; border-collapse: collapse; }
+
+/* ── TABLE — fixed, no conflicts ────────────────────────── */
+.tableWrap {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;   /* KEY FIX: forces columns to stay side-by-side */
+  table-layout: auto;
+}
+
+/* Table header */
 .table thead tr { border-bottom: 1px solid var(--border); }
-.table th { padding: 11px 16px; font-size: 11px; font-weight: 600; color: var(--text-3); text-align: left; text-transform: uppercase; letter-spacing: .07em; white-space: nowrap; }
-.row { border-bottom: 1px solid var(--border); transition: background .1s; }
-.row:last-child { border-bottom: none; }
-.row:hover { background: var(--bg-3); }
-.table td { padding: 12px 16px; font-size: 14px; color: var(--text-2); vertical-align: middle; }
-.empCell { display: flex; align-items: center; gap: 10px; }
+.table th {
+  padding: 11px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  white-space: nowrap;
+}
+.table th:first-child { padding-left: 20px; }
+.table th:last-child  { padding-right: 20px; }
+
+/* Table rows — renamed to tableRow to avoid conflict with form .row */
+.tableRow {
+  display: table-row !important;  /* hard override — prevents grid from taking over */
+  border-bottom: 1px solid var(--border);
+  transition: background .1s;
+}
+.tableRow:last-child { border-bottom: none; }
+.tableRow:hover { background: var(--bg-3); }
+
+/* Table cells */
+.table td {
+  display: table-cell !important; /* hard override */
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text-2);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.table td:first-child { padding-left: 20px; }
+.table td:last-child  { padding-right: 20px; }
+
+/* Cell content */
+.empCell   { display: flex; align-items: center; gap: 10px; }
 .empAvatar { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
-.empName { font-weight: 500; color: var(--text); white-space: nowrap; }
-.empId { font-family: var(--font-mono); font-size: 11px; color: var(--accent); background: var(--accent-dim); padding: 2px 7px; border-radius: 6px; }
-.dept { font-size: 12px; color: var(--text-3); background: var(--bg-3); border: 1px solid var(--border); padding: 2px 8px; border-radius: 6px; }
-.dateCell { font-size: 13px !important; white-space: nowrap; }
-.timeCell { font-family: var(--font-mono); font-size: 12px !important; color: var(--text-3) !important; }
-.badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; }
-.present { background: var(--green-dim); color: var(--green); border: 1px solid rgba(16,185,129,.2); }
-.absent  { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(239,68,68,.2); }
+.empName   { font-weight: 500; color: var(--text); white-space: nowrap; }
+.empId     { font-family: var(--font-mono); font-size: 11px; color: var(--accent); background: var(--accent-dim); padding: 2px 7px; border-radius: 6px; }
+.dept      { font-size: 12px; color: var(--text-3); background: var(--bg-3); border: 1px solid var(--border); padding: 2px 8px; border-radius: 6px; }
+.dateCell  { font-size: 13px !important; white-space: nowrap; }
+.timeCell  { font-family: var(--font-mono); font-size: 12px !important; color: var(--text-3) !important; }
+.badge     { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; }
+.present   { background: var(--green-dim); color: var(--green); border: 1px solid rgba(16,185,129,.2); }
+.absent    { background: var(--red-dim);   color: var(--red);   border: 1px solid rgba(239,68,68,.2); }
+
+/* ── MODAL ──────────────────────────────────────────────── */
 .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 16px; }
 .modal { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-xl); width: 100%; max-width: 480px; box-shadow: var(--shadow-lg); }
 .modalHeader { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
 .modalHeader h2 { font-size: 16px; font-weight: 600; color: var(--text); }
 .closeBtn { width: 28px; height: 28px; border-radius: 8px; background: var(--bg-3); border: 1px solid var(--border); color: var(--text-3); font-size: 18px; display: flex; align-items: center; justify-content: center; }
 .form { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
-.row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* ── FORM GRID ROW — renamed to formRow, no conflict with table ── */
+.formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
 .field { display: flex; flex-direction: column; gap: 6px; }
 .field label { font-size: 12px; font-weight: 500; color: var(--text-2); }
-.field input, .field select { background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 14px; padding: 9px 12px; transition: border-color .2s; }
+.field input, .field select { background: var(--bg-3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-size: 14px; padding: 9px 12px; transition: border-color .2s; font-family: var(--font-body); }
 .field input:focus, .field select:focus { border-color: var(--accent); outline: none; }
 .field select option { background: var(--bg-3); }
 .field span { font-size: 12px; color: var(--red); }
@@ -61,28 +119,13 @@
 .submitBtn { padding: 9px 20px; border-radius: var(--radius); background: var(--accent); color: #fff; font-size: 14px; font-weight: 500; transition: opacity .15s; display: flex; align-items: center; gap: 8px; }
 .submitBtn:disabled { opacity: .5; cursor: not-allowed; }
 .spin { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,.3); border-top-color: #fff; border-radius: 50%; animation: spin .6s linear infinite; display: inline-block; }
-@media (max-width:600px) { .page{padding:20px 16px;} .row{grid-template-columns:1fr;} }
 
-/* ── Fix 2: Attendance table column layout ── */
-.tableWrap { background: var(--bg-2); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; overflow-x: auto; -webkit-overflow-scrolling: touch; }
-.table { width: 100%; border-collapse: collapse; min-width: 700px; }
-.table th:first-child,
-.table td:first-child { padding-left: 20px; }
-.table th:last-child,
-.table td:last-child  { padding-right: 20px; }
-/* Prevent any cell from wrapping and breaking column alignment */
-.table th, .table td { white-space: nowrap; }
-.empName { white-space: nowrap; max-width: 160px; overflow: hidden; text-overflow: ellipsis; }
-
-/* ── Fix 3: Attendance page full responsiveness ── */
+/* ── Responsive ─────────────────────────────────────────── */
 @media (max-width: 768px) {
   .page { padding: 20px 16px; }
-  .header { gap: 10px; }
   .title { font-size: 22px; }
-  .filters { gap: 8px; }
   .filterSelect { min-width: 130px; font-size: 12px; }
   .dateInput { font-size: 12px; padding: 6px 8px; }
-  .summary { gap: 8px; }
   .pill { font-size: 12px; padding: 5px 10px; }
 }
 
@@ -90,4 +133,5 @@
   .markBtn { padding: 8px 12px; font-size: 13px; }
   .filters { flex-direction: column; align-items: flex-start; }
   .filterSelect, .dateInput { width: 100%; }
+  .formRow { grid-template-columns: 1fr; }
 }
