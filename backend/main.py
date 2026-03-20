@@ -50,7 +50,7 @@ def seed_admin():
             admin = models.User(
                 name="Super Admin",
                 email="admin@hrms.com",
-                password_hash=hash_password("admin123"),
+                password_hash=hash_password("admin1234"),
                 role=models.RoleEnum.admin,
             )
             db.add(admin); db.commit()

@@ -66,7 +66,7 @@ export default function Login() {
 
         <div className={s.hint}>
           <span className={s.hintLabel}>Default admin:</span>
-          <code className={s.hintCode}>admin@hrms.com / admin123</code>
+          <code className={s.hintCode}>admin@hrms.com / admin1234</code>
         </div>
 
         <p className={s.switchText}>
